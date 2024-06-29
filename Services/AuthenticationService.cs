@@ -15,7 +15,7 @@ namespace MangaReader.Services
             _config = config;
         }
 
-        public async Task<AuthResponse> AuthenticateAsync()
+        public async Task<AuthenticationResponse> AuthenticateAsync()
         {
             var userAgent = new ProductInfoHeaderValue(".NET", "8.0");
             _httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent);
@@ -31,7 +31,7 @@ namespace MangaReader.Services
                 );
 
                 var json = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<AuthResponse>(json);
+                var result = JsonSerializer.Deserialize<AuthenticationResponse>(json);
 
                 return result;
             }

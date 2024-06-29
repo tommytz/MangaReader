@@ -20,7 +20,7 @@ namespace MangaReader.Controllers
         }
 
         [HttpGet(Name = "GetBearerToken")]
-        public async Task<ActionResult<AuthResponse>> GetBearerToken()
+        public async Task<ActionResult<AuthenticationResponse>> GetBearerToken()
         {
             var authResponse = await _authenticationService.AuthenticateAsync();
 

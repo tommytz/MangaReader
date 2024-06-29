@@ -4,6 +4,6 @@ namespace MangaReader.Services
 {
     public interface IAuthenticationService
     {
-        Task<AuthResponse> AuthenticateAsync();
+        Task<AuthenticationResponse> AuthenticateAsync();
     }
 }

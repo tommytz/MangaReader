@@ -2,7 +2,7 @@
 
 namespace MangaReader.Entities
 {
-    public class AuthResponse
+    public class AuthenticationResponse
     {
         [JsonPropertyName("access_token")]
         public string AccessToken { get; set; }
