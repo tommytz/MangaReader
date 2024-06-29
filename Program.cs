@@ -1,3 +1,4 @@
+using MangaReader.Entities;
 using MangaReader.Services;
 using Microsoft.Extensions.Caching.Memory;
 using System.Net.Http.Headers;
@@ -5,7 +6,7 @@ using System.Net.Http.Headers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.Configure<AuthenticationOptions>(builder.Configuration.GetSection("AuthenticationOptions"));
 builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
 {
     client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(".NET", "8.0"));

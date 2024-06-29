@@ -1,6 +1,6 @@
 ﻿namespace MangaReader.Entities
 {
-    public class AuthenticationSettings
+    public class AuthenticationOptions
     {
         public string GrantType { get; set; }
         public string Username { get; set; }
@@ -10,13 +10,13 @@
 
         public FormUrlEncodedContent ToFormUrlEncoded()
         {
-            var formData = new Dictionary<string, string>()
+            var formData = new List<KeyValuePair<string, string>>()
             {
-                { "grant_type", this.GrantType },
-                { "username", this.Username },
-                { "password", this.Password },
-                { "client_id", this.ClientId },
-                { "client_secret", this.ClientSecret }
+                new ("grant_type", this.GrantType),
+                new ("username", this.Username),
+                new ("password", this.Password),
+                new ("client_id", this.ClientId),
+                new ("client_secret", this.ClientSecret)
             };
 
             return new FormUrlEncodedContent(formData);

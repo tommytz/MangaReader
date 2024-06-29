@@ -1,5 +1,5 @@
 ﻿using MangaReader.Entities;
-using System.Net.Http.Headers;
+using Microsoft.Extensions.Options;
 using System.Text.Json;
 
 namespace MangaReader.Services
@@ -7,22 +7,19 @@ namespace MangaReader.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly HttpClient _httpClient;
-        private readonly IConfiguration _config;
+        private readonly AuthenticationOptions _options;
 
-        public AuthenticationService(HttpClient httpClient, IConfiguration config)
+        public AuthenticationService(HttpClient httpClient, IOptions<AuthenticationOptions> options)
         {
             _httpClient = httpClient;
-            _config = config;
+            _options = options.Value;
         }
 
         public async Task<AuthenticationResponse> AuthenticateAsync()
         {
-            // TODO: Consider using IOptions instead to the whole IConfiguration
-            var authConfig = _config.GetSection("AuthenticationSettings").Get<AuthenticationSettings>();
-
             try
             {
-                HttpResponseMessage response = await _httpClient.PostAsync(string.Empty, authConfig.ToFormUrlEncoded());
+                HttpResponseMessage response = await _httpClient.PostAsync(string.Empty, _options.ToFormUrlEncoded());
 
                 var json = await response.Content.ReadAsStringAsync();
                 var result = JsonSerializer.Deserialize<AuthenticationResponse>(json);
