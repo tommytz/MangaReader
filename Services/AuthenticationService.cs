@@ -17,18 +17,12 @@ namespace MangaReader.Services
 
         public async Task<AuthenticationResponse> AuthenticateAsync()
         {
-            var userAgent = new ProductInfoHeaderValue(".NET", "8.0");
-            _httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent);
-            
+            // TODO: Consider using IOptions instead to the whole IConfiguration
             var authConfig = _config.GetSection("AuthenticationSettings").Get<AuthenticationSettings>();
 
             try
             {
-                HttpResponseMessage response = await _httpClient.PostAsync
-                (
-                    "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token",
-                     authConfig.ToFormUrlEncoded()
-                );
+                HttpResponseMessage response = await _httpClient.PostAsync(string.Empty, authConfig.ToFormUrlEncoded());
 
                 var json = await response.Content.ReadAsStringAsync();
                 var result = JsonSerializer.Deserialize<AuthenticationResponse>(json);
