@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using ExtensionMethods;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MangaReader.Services
 {
@@ -24,6 +25,7 @@ namespace MangaReader.Services
             {
                 var authResponse = await _authenticationService.AuthenticateAsync();
                 accessToken = authResponse.AccessToken;
+                var refreshExpiry = authResponse.RefreshExpiresIn();
 
                 var options = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(authResponse.ExpiresIn));
                 _memoryCache.Set<string>("AccessToken", accessToken, options);

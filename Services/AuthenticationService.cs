@@ -1,12 +1,12 @@
-﻿using MangaReader.Entities;
+﻿using IdentityModel.Client;
+using MangaReader.Entities;
 using Microsoft.Extensions.Options;
-using System.Text.Json;
 
 namespace MangaReader.Services
 {
     public interface IAuthenticationService
     {
-        Task<AuthenticationResponse> AuthenticateAsync();
+        Task<TokenResponse> AuthenticateAsync();
     }
 
     public class AuthenticationService : IAuthenticationService
@@ -20,23 +20,10 @@ namespace MangaReader.Services
             _options = options.Value;
         }
 
-        // TODO: Consider using https://github.com/IdentityModel/IdentityModel for token requests and refresh
-        public async Task<AuthenticationResponse> AuthenticateAsync()
+        public async Task<TokenResponse> AuthenticateAsync()
         {
-            try
-            {
-                HttpResponseMessage response = await _httpClient.PostAsync(string.Empty, _options.ToFormUrlEncoded());
-
-                var json = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<AuthenticationResponse>(json);
-
-                return result;
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine(e.Message);
-                return null;
-            }
+            // TODO: Add some error handling code here
+            return await _httpClient.RequestPasswordTokenAsync(_options.ToPasswordTokenRequest());
         }
     }
 }

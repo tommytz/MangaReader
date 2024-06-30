@@ -1,25 +1,33 @@
-﻿namespace MangaReader.Entities
+﻿using IdentityModel.Client;
+
+namespace MangaReader.Entities
 {
     public class AuthenticationOptions
     {
-        public string GrantType { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
 
-        public FormUrlEncodedContent ToFormUrlEncoded()
+        public PasswordTokenRequest ToPasswordTokenRequest()
         {
-            var formData = new List<KeyValuePair<string, string>>()
+            return new PasswordTokenRequest
             {
-                new ("grant_type", this.GrantType),
-                new ("username", this.Username),
-                new ("password", this.Password),
-                new ("client_id", this.ClientId),
-                new ("client_secret", this.ClientSecret)
+                ClientId = this.ClientId,
+                ClientSecret = this.ClientSecret,
+                UserName = this.Username,
+                Password = this.Password
             };
+        }
 
-            return new FormUrlEncodedContent(formData);
+        public RefreshTokenRequest ToRefreshTokenRequest(string refreshToken)
+        {
+            return new RefreshTokenRequest
+            {
+                ClientId = this.ClientId,
+                ClientSecret = this.ClientSecret,
+                RefreshToken = refreshToken
+            };
         }
     }
 }
