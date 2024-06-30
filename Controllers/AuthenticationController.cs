@@ -9,22 +9,22 @@ namespace MangaReader.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly ILogger<AuthenticationController> _logger;
-        private readonly IAuthenticationService _authenticationService;
+        private readonly ICacheManager _cacheManager;
 
         public AuthenticationController(
             ILogger<AuthenticationController> logger,
-            IAuthenticationService authenticationService)
+            ICacheManager cacheManager)
         {
             _logger = logger;
-            _authenticationService = authenticationService;
+            _cacheManager = cacheManager;
         }
 
         [HttpGet(Name = "GetBearerToken")]
-        public async Task<ActionResult<AuthenticationResponse>> GetBearerToken()
+        public async Task<ActionResult<string>> GetBearerToken()
         {
-            var authResponse = await _authenticationService.AuthenticateAsync();
+            var bearer = await _cacheManager.GetAccessTokenAsync();
 
-            return Ok(authResponse);
+            return Ok(bearer);
         }
     }
 }

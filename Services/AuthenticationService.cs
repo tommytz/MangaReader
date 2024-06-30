@@ -4,6 +4,11 @@ using System.Text.Json;
 
 namespace MangaReader.Services
 {
+    public interface IAuthenticationService
+    {
+        Task<AuthenticationResponse> AuthenticateAsync();
+    }
+
     public class AuthenticationService : IAuthenticationService
     {
         private readonly HttpClient _httpClient;
@@ -15,6 +20,7 @@ namespace MangaReader.Services
             _options = options.Value;
         }
 
+        // TODO: Consider using https://github.com/IdentityModel/IdentityModel for token requests and refresh
         public async Task<AuthenticationResponse> AuthenticateAsync()
         {
             try
